@@ -33,6 +33,7 @@ func (st *vBlank) Init(ppu *PPU) {
 
 		// Frame complete, switch buffers
 		ppu.swapBuffers()
+		ppu.windowRendered = false
 
 		if ppu.VBlankCallback != nil {
 			ppu.VBlankCallback()

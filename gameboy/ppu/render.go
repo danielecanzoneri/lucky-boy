@@ -102,7 +102,7 @@ func (ppu *PPU) renderLine() int {
 
 	// Determine first pixel that will belong to window
 	xWindow := FrameWidth // i.e. off screen
-	if ppu.windowEnabled && ppu.LY >= ppu.WY {
+	if ppu.windowEnabled && ppu.windowRendered {
 		xWindow = int(ppu.WX) - 7
 	}
 

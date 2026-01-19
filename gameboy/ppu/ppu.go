@@ -46,7 +46,8 @@ type PPU struct {
 	OBJPalette [64]uint8
 
 	// Window Y count
-	wyCounter uint8
+	wyCounter      uint8
+	windowRendered bool // True if at any line WY = LY
 
 	// LCD control
 	active               bool   // Bit 7

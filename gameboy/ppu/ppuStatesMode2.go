@@ -30,6 +30,10 @@ type oamScan struct {
 }
 
 func (st *oamScan) Init(ppu *PPU) {
+	if ppu.WY == ppu.LY {
+		ppu.windowRendered = true
+	}
+	
 	if st.rowAccessed == 0 { // Still hBlank
 		util.SetBit(&ppu.STAT, 2, 0)
 		ppu.oam.readDisabled = true
