@@ -70,6 +70,7 @@ func (ppu *PPU) SkipCGBBoot(rom cartridge.Cartridge) (titleChecksum uint8) {
 	ppu.STAT = 0x81
 	ppu.active = true
 	ppu.LY = 0x99
+	ppu.BGP = 0xFC
 	ppu.windowTileMapAddr = 0x9800
 	ppu.bgWindowTileDataArea = 1
 	ppu.bgTileMapAddr = 0x9800
