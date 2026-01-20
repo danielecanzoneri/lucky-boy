@@ -70,7 +70,7 @@ func (ppu *PPU) Write(addr uint16, v uint8) {
 		ppu.objEnabled = util.ReadBit(v, 1) > 0
 		ppu.bgWindowEnabled = util.ReadBit(v, 0) > 0
 	case LYAddr:
-		panic("should not write LY")
+		return
 	case LYCAddr:
 		ppu.LYC = v
 		if ppu.active { // Changing LYC while PPU is inactive doesn't update STAT
