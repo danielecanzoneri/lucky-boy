@@ -48,11 +48,12 @@ func (p DMGPalette) ConvertToCGB(cgbPaletteData []uint8) CGBPalette {
 	return palette
 }
 
-func (ppu *PPU) GetFrame() *[FrameHeight][FrameWidth]uint16 {
-	return ppu.frontBuffer
+func (ppu *PPU) GetFrame() (*[FrameHeight][FrameWidth]uint16, *[FrameHeight][FrameWidth]uint16) {
+	return ppu.frontBuffer, ppu.previousFrameBuffer
 }
 
 func (ppu *PPU) swapBuffers() {
+	ppu.previousFrameBuffer = ppu.frontBuffer
 	ppu.frontBuffer = ppu.backBuffer
 	ppu.backBuffer = new([FrameHeight][FrameWidth]uint16)
 

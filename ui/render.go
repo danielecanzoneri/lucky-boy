@@ -90,6 +90,10 @@ func (ui *UI) initRenderer(useShader bool) {
 			"LightenScreen": float32(0.0),
 		}
 	}
+
+	// Reuse pixel buffer to avoid allocations (RGBA = 4 bytes per pixel)
+	pixelBufferSize := ppu.FrameWidth * ppu.FrameHeight * 4
+	ui.pixelBuffer = make([]byte, pixelBufferSize)
 }
 
 // Inherit Ebiten Game interface
@@ -135,35 +139,30 @@ func (ui *UI) applyShader(frame *ebiten.Image) *ebiten.Image {
 
 func (ui *UI) Draw(screen *ebiten.Image) {
 	// Update the frame image with the current frame in the PPU
-	frameBuffer := ui.GameBoy.PPU.GetFrame()
+	frameBuffer, previousBuffer := ui.GameBoy.PPU.GetFrame()
 
-	// Reuse pixel buffer to avoid allocations (RGBA = 4 bytes per pixel)
-	pixelBufferSize := ppu.FrameWidth * ppu.FrameHeight * 4
-	if cap(ui.pixelBuffer) < pixelBufferSize {
-		ui.pixelBuffer = make([]byte, pixelBufferSize)
-	}
-	pixels := ui.pixelBuffer[:pixelBufferSize]
-
-	// Convert frame buffer to RGBA pixels in one pass
-	// Direct color conversion avoids RGBAModel.Convert overhead
+	// Convert frame buffer to RGBA pixels
 	for y := range ppu.FrameHeight {
 		for x := range ppu.FrameWidth {
-			colorId := frameBuffer[y][x]
-			c := ui.palette.Get(colorId)
+			colorId0 := frameBuffer[y][x]
+			colorId1 := previousBuffer[y][x]
+			c0 := ui.palette.Get(colorId0)
+			c1 := ui.palette.Get(colorId1)
 
 			// Direct conversion to RGBA (16 bit)
-			r, g, b, a := c.RGBA()
+			r0, g0, b0, a0 := c0.RGBA()
+			r1, g1, b1, a1 := c1.RGBA()
 
 			idx := (y*ppu.FrameWidth + x) * 4
-			pixels[idx] = uint8(r >> 8)
-			pixels[idx+1] = uint8(g >> 8)
-			pixels[idx+2] = uint8(b >> 8)
-			pixels[idx+3] = uint8(a >> 8)
+			ui.pixelBuffer[idx] = uint8(r0>>9) + uint8(r1>>9)
+			ui.pixelBuffer[idx+1] = uint8(g0>>9) + uint8(g1>>9)
+			ui.pixelBuffer[idx+2] = uint8(b0>>9) + uint8(b1>>9)
+			ui.pixelBuffer[idx+3] = uint8(a0>>9) + uint8(a1>>9)
 		}
 	}
 
 	// Write all pixels at once
-	frameImage.WritePixels(pixels)
+	frameImage.WritePixels(ui.pixelBuffer)
 
 	// Apply shader
 	imageToDraw := ui.applyShader(frameImage)

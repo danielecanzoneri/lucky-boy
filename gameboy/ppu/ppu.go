@@ -24,6 +24,9 @@ type PPU struct {
 	frontBuffer *[FrameHeight][FrameWidth]uint16
 	backBuffer  *[FrameHeight][FrameWidth]uint16
 
+	// Buffer used to store previous frame (for frame blending)
+	previousFrameBuffer *[FrameHeight][FrameWidth]uint16
+
 	LCDC uint8 // LCD control
 	STAT uint8 // STAT interrupt
 	SCY  uint8 // y - background scrolling
@@ -79,6 +82,7 @@ func New(cgb bool) *PPU {
 	ppu.STAT = 0x84 // Set unused bit (and LY=LYC)
 
 	// Init buffers
+	ppu.previousFrameBuffer = new([FrameHeight][FrameWidth]uint16)
 	ppu.frontBuffer = new([FrameHeight][FrameWidth]uint16)
 	ppu.backBuffer = new([FrameHeight][FrameWidth]uint16)
 	ppu.emptyFrame()
