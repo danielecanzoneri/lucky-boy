@@ -144,7 +144,8 @@ mainRender:
 
 					// Avoid condition retrigger
 					xWindow = FrameWidth
-					continue mainRender // Refetch pixels
+
+					break // Refetch pixels
 				}
 
 				// Render background
