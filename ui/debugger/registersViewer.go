@@ -117,6 +117,7 @@ func newLcdPanel() *panel {
 		{name: "FF48 OBP0", valueSync: func(gb *gameboy.GameBoy) string { return fmt.Sprintf("%02X", gb.Memory.DebugRead(0xFF48)) }},
 		{name: "FF49 OBP1", valueSync: func(gb *gameboy.GameBoy) string { return fmt.Sprintf("%02X", gb.Memory.DebugRead(0xFF49)) }},
 		{name: "FF4A WY", valueSync: func(gb *gameboy.GameBoy) string { return fmt.Sprintf("%02X", gb.Memory.DebugRead(0xFF4A)) }},
+		{name: "FF4B WX", valueSync: func(gb *gameboy.GameBoy) string { return fmt.Sprintf("%02X", gb.Memory.DebugRead(0xFF4B)) }},
 	}
 	return newPanel("LCD", entries...)
 }

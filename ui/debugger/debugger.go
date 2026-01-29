@@ -66,10 +66,10 @@ func New(gb *gameboy.GameBoy) *Debugger {
 		widget.ContainerOpts.Layout(widget.NewRowLayout(
 			// TODO - hardcoded, remove
 			widget.RowLayoutOpts.Padding(&widget.Insets{
-				Top:    6,
+				Top:    0,
 				Left:   3,
 				Right:  0,
-				Bottom: 8,
+				Bottom: 0,
 			}),
 		)),
 	)

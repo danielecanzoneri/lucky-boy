@@ -63,7 +63,7 @@ func newMemoryViewer() *memoryViewer {
 			Idle: image.NewNineSliceColor(theme.Debugger.Slider.TrackColor),
 		}, theme.Debugger.Button.Image),
 		widget.SliderOpts.MinHandleSize(15), // Width of handle
-		widget.SliderOpts.Direction(widget.DirectionVertical),
+		widget.SliderOpts.Orientation(widget.DirectionVertical),
 		widget.SliderOpts.MinMax(0, len(mv.entries)-mv.length),
 		widget.SliderOpts.PageSizeFunc(func() int { return mv.length / 2 }),
 		widget.SliderOpts.ChangedHandler(func(args *widget.SliderChangedEventArgs) {
@@ -85,7 +85,13 @@ func newMemoryViewer() *memoryViewer {
 			Idle: image.NewNineSliceColor(color.RGBA{}),
 			Mask: image.NewNineSliceColor(color.RGBA{R: 0xFF, G: 0xFF, B: 0xFF, A: 0xFF}),
 		}),
-		widget.ScrollContainerOpts.Padding(widget.NewInsetsSimple(theme.Debugger.Padding)),
+		// TODO - hardcoded, remove
+		widget.ScrollContainerOpts.Padding(&widget.Insets{
+			Top:    3,
+			Left:   theme.Debugger.Padding,
+			Right:  theme.Debugger.Padding,
+			Bottom: 2,
+		}),
 	)
 	scrollContainer.GetWidget().ScrolledEvent.AddHandler(func(args any) {
 		if a, ok := args.(*widget.WidgetScrolledEventArgs); ok {
