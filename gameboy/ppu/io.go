@@ -199,11 +199,10 @@ func (ppu *PPU) enable() {
 	ppu.active = true
 	ppu.dots = 0
 	ppu.internalStateLength = 0
+	ppu.firstFrame = true
 
 	ppu.setState(new(glitchedOamScan))
 	ppu.checkSTATInterrupt()
-
-	ppu.emptyFrame()
 }
 
 func (ppu *PPU) disable() {
@@ -220,7 +219,4 @@ func (ppu *PPU) disable() {
 	ppu.dots = 0
 	ppu.internalStateLength = 0
 	ppu.internalState = nil
-
-	// Blank screen
-	ppu.emptyFrame()
 }

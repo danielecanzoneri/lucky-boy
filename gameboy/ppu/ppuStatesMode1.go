@@ -31,8 +31,12 @@ func (st *vBlank) Init(ppu *PPU) {
 		ppu.wyCounter = 0
 		ppu.RequestVBlankInterrupt()
 
-		// Frame complete, switch buffers
-		ppu.swapBuffers()
+		// Frame complete, switch buffers (don't switch on first frame - keep screen blank)
+		if ppu.firstFrame {
+			ppu.firstFrame = false
+		} else {
+			ppu.swapBuffers()
+		}
 		ppu.windowRendered = false
 
 		if ppu.VBlankCallback != nil {

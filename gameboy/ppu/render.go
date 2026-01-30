@@ -57,17 +57,11 @@ func (ppu *PPU) swapBuffers() {
 	ppu.frontBuffer = ppu.backBuffer
 	ppu.backBuffer = new([FrameHeight][FrameWidth]uint16)
 
-	if ppu.Cgb {
-		// Fill new buffer with blank pixels
-		for x := range FrameWidth {
-			for y := range FrameHeight {
-				ppu.backBuffer[y][x] = 0xFFFF
-			}
-		}
-	}
+	// Fill new buffer with blank pixels
+	ppu.setBlankFrame(ppu.backBuffer)
 }
 
-func (ppu *PPU) emptyFrame() {
+func (ppu *PPU) setBlankFrame(buffer *[FrameHeight][FrameWidth]uint16) {
 	var blankPixel uint16 = 0
 	if ppu.Cgb {
 		blankPixel = 0xFFFF
@@ -75,12 +69,9 @@ func (ppu *PPU) emptyFrame() {
 
 	for x := range FrameWidth {
 		for y := range FrameHeight {
-			ppu.backBuffer[y][x] = blankPixel
+			buffer[y][x] = blankPixel
 		}
 	}
-
-	// Swap buffers
-	ppu.swapBuffers()
 }
 
 // renderLine returns the number of penalty dots incurred to draw this line

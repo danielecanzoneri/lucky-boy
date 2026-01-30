@@ -20,6 +20,9 @@ type PPU struct {
 	objsLY  [objsLimit]*Object
 	numObjs int
 
+	// First frame after enabling is always blank
+	firstFrame bool
+
 	// Double buffering to avoid screen tearing
 	frontBuffer *[FrameHeight][FrameWidth]uint16
 	backBuffer  *[FrameHeight][FrameWidth]uint16
@@ -85,7 +88,7 @@ func New(cgb bool) *PPU {
 	ppu.previousFrameBuffer = new([FrameHeight][FrameWidth]uint16)
 	ppu.frontBuffer = new([FrameHeight][FrameWidth]uint16)
 	ppu.backBuffer = new([FrameHeight][FrameWidth]uint16)
-	ppu.emptyFrame()
+	ppu.setBlankFrame(ppu.frontBuffer)
 
 	return ppu
 }
