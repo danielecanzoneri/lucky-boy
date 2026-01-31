@@ -117,42 +117,43 @@ mainRender:
 			}
 
 			// Pixel color (0-3)
-			bgPixel := bgPixels[tileShift+i]
-
+			var bgPixel uint8 = 0
 			if doRenderBGWindow {
-				// Switch to rendering window
-				if int(x) >= xWindow {
-					// Adjust rendering parameters
-					tileX = 0
-					tileY = ppu.wyCounter >> 3
-					y = ppu.wyCounter & 0x7
-					tileBaseAddr = ppu.windowTileMapAddr
-
-					// 6-dot penalty is incurred while the BG fetcher is being set up for the window.
-					penaltyDotsBG += 6
-					// Increment window y counter
-					ppu.wyCounter++
-
-					// Avoid condition retrigger
-					xWindow = FrameWidth
-
-					break // Refetch pixels
-				}
-
-				// Render background
-				var bgPalette Palette = ppu.BGP // DMG palette
-				if ppu.Cgb {
-					// If we are in compatibility mode, use the boot computed palette
-					if ppu.DmgCompatibility {
-						bgPalette = ppu.BGP.ConvertToCGB(ppu.BGPalette[0:8])
-					} else {
-						paletteId := bgTileAttrs.CGBPalette()
-						bgPalette = CGBPalette(ppu.BGPalette[8*paletteId : 8*paletteId+8])
-					}
-				}
-
-				ppu.backBuffer[ppu.LY][x] = bgPalette.GetColor(bgPixel)
+				bgPixel = bgPixels[tileShift+i]
 			}
+
+			// Switch to rendering window
+			if int(x) >= xWindow {
+				// Adjust rendering parameters
+				tileX = 0
+				tileY = ppu.wyCounter >> 3
+				y = ppu.wyCounter & 0x7
+				tileBaseAddr = ppu.windowTileMapAddr
+
+				// 6-dot penalty is incurred while the BG fetcher is being set up for the window.
+				penaltyDotsBG += 6
+				// Increment window y counter
+				ppu.wyCounter++
+
+				// Avoid condition retrigger
+				xWindow = FrameWidth
+
+				break // Refetch pixels
+			}
+
+			// Render background
+			var bgPalette Palette = ppu.BGP // DMG palette
+			if ppu.Cgb {
+				// If we are in compatibility mode, use the boot computed palette
+				if ppu.DmgCompatibility {
+					bgPalette = ppu.BGP.ConvertToCGB(ppu.BGPalette[0:8])
+				} else {
+					paletteId := bgTileAttrs.CGBPalette()
+					bgPalette = CGBPalette(ppu.BGPalette[8*paletteId : 8*paletteId+8])
+				}
+			}
+
+			ppu.backBuffer[ppu.LY][x] = bgPalette.GetColor(bgPixel)
 
 			// Render objects
 			if ppu.objEnabled {
