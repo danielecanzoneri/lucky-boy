@@ -253,7 +253,3 @@ mainRender:
 	// Round objects penalty dots to M-cycle (TODO - investigate why it doesn't work otherwise)
 	return penaltyDotsBG + (penaltyDotsObj & ^3)
 }
-
-func getTileMapOffset(x, y uint8) uint16 {
-	return (uint16(x) >> 3) | ((uint16(y) & 0xF8) << 2)
-}
