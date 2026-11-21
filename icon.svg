@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 100 100"
+     width="256"
+     height="256">
+
+      <!-- Sfondo -->
+      <circle
+            cx="50"
+            cy="50"
+            r="48"
+            fill="white"
+            stroke="black"
+            stroke-width="1"/>
+
+      <!-- Quadrifoglio -->
+      <g fill="black" transform="translate(0 -10) rotate(45 50 50)">
+
+            <!-- Foglia superiore -->
+            <path d="
+                  M 50 30
+                  C 45 25, 35 28, 35 38
+                  C 35 48, 50 55, 50 60
+                  C 50 55, 65 48, 65 38
+                  C 65 28, 55 25, 50 30
+                  Z"
+                  transform="translate(10 2) scale(0.8)"
+                  transform-box="fill-box"
+                  transform-origin="center"/>
+
+            <!-- Destra -->
+            <path d="
+                  M 70 50
+                  C 75 45, 72 35, 62 35
+                  C 52 35, 45 50, 40 50
+                  C 45 50, 52 65, 62 65
+                  C 72 65, 75 55, 70 50
+                  Z"
+                  transform="translate(18 10) scale(0.8)"
+                  transform-box="fill-box"
+                  transform-origin="center"/>
+
+            <!-- Basso -->
+            <path d="
+                  M 50 70
+                  C 55 75, 65 72, 65 62
+                  C 65 52, 50 45, 50 40
+                  C 50 45, 35 52, 35 62
+                  C 35 72, 45 75, 50 70
+                  Z"
+                  transform="translate(10 18) scale(0.8)"
+                  transform-box="fill-box"
+                  transform-origin="center"/>
+
+            <!-- Sinistra -->
+            <path d="
+                  M 30 50
+                  C 25 55, 28 65, 38 65
+                  C 48 65, 55 50, 60 50
+                  C 55 50, 48 35, 38 35
+                  C 28 35, 25 45, 30 50
+                  Z"
+                  transform="translate(2 10) scale(0.8)"
+                  transform-box="fill-box"
+                  transform-origin="center"/>
+
+            </g>
+
+            <!-- Gambo curvo -->
+            <path d="
+                  M 50 62
+                  L 50 80
+                  A 5 5 1 0 1 45 85
+                  "
+                  fill="none"
+                  stroke="black"
+                  stroke-width="4"
+                  stroke-linecap="round"/>
+
+            </svg>
