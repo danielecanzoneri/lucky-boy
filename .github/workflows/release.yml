@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*'
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,10 +39,10 @@ jobs:
             libxxf86vm-dev \
             libasound2-dev \
             libgtk-3-dev
-          
+
       - name: Install dependencies
         run: go get .
-      
+
       - name: Build
         env:
           GOOS: ${{ matrix.goos }}
@@ -50,11 +50,24 @@ jobs:
         run: |
           go build -o luckyboy-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
 
-      - name: Upload binaries
+      - uses: actions/upload-artifact@v4
+        with:
+          name: luckyboy-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: luckyboy-*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          files: luckyboy-*
-        env:
-          GITHUB_TOKEN: ${{ secrets.LUCKYBOY_RELEASE_ACTION }}
-
-          
+          files: dist/*
